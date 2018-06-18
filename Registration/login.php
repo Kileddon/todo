@@ -1,21 +1,18 @@
 <html>
   <?php include 'sendtoserver.php'?>
   <head>
-    <title>Registration</title>
+    <title>Login</title>
   </head>
   <body>
-    <h2>Registration</h2>
-    <form action="register.php" method="post">
+    <h2>Login</h2>
+    <form action="login.php" method="post">
       <label>Login:</label>
         <input type="text" name="login">
         <br>
       <label>Password:</label>
         <input type="text" name="password">
         <br>
-      <label>email:</label>
-          <input type="text" name="email">
-          <br>
-      <button type="submit" name="reg_user">Register</button>
+      <button type="submit" name="log_user">Login</button>
     </form>
   </body>
 </html>
