@@ -1,5 +1,4 @@
 <?php
-
 if (isset($_POST['reg_user'])) {
   $login = $_POST['login'];
   $password = hash('sha512', $_POST['password'] . SALT);

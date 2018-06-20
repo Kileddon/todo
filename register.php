@@ -1,8 +1,3 @@
-<html>
-  <head>
-    <title>Registration</title>
-  </head>
-  <body>
     <h2>Registration</h2>
     <form method="post">
       <label>Login:</label>
@@ -15,6 +10,3 @@
           <input type="text" name="email">
           <br>
       <button type="submit" name="reg_user">Register</button>
-    </form>
-  </body>
-</html>
