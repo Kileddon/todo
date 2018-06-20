@@ -1,5 +1,4 @@
 <?php
-include "../connect.php";
 
 if (isset($_POST['reg_user'])) {
   $login = $_POST['login'];
@@ -9,7 +8,7 @@ if (isset($_POST['reg_user'])) {
   $sql->bind_param('sss', $login, $email, $password);
   $result = $sql->execute();
   if ($result) {
-    echo 'ok ' . $login;
+    echo 'Hello, ' . $login;
   }
   else {
     echo 'rip';
@@ -27,13 +26,14 @@ if (isset($_POST['reg_user'])) {
      if (!$row) {
        return;
      }
-     echo 'ok ' . $login;
+     echo 'Hello, ' . $login;
      $token = hash('sha512', $row['id'] . time() . SALT);
-     setcookie('meow', $token);
+     setcookie('token', $token);
      $upd_token = $link->prepare('UPDATE `users` SET `token` =? WHERE `id` =?');
      $upd_token->bind_param('si', $token, $row['id']);
      $upd_token->execute();
+     $page = $_SERVER['PHP_SELF'];
+     echo '<meta http-equiv="Refresh" content="0;' . $page . '">';
    }
  }
-
-?>
+ ?>
