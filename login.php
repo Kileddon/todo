@@ -1,9 +1,10 @@
-    <h2>Login</h2>
-    <form method="post">
-      <label>Login:</label>
-        <input type="text" name="login">
-        <br>
-      <label>Password:</label>
-        <input type="password" name="password">
-        <br>
-      <button type="submit" name="log_user">Login</button>
+<h2>Login</h2>
+<form method="post">
+  <label>Login:</label>
+  <input type="text" name="login">
+  <br>
+  <label>Password:</label>
+  <input type="password" name="password">
+  <br>
+  <button type="submit" name="log_user">Login</button>
+</form>

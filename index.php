@@ -1,10 +1,9 @@
 <html>
-    <?php
+  <?php
     include 'connect.php';
     include 'sendtoserver.php';
-    ?>
+  ?>
   <head>
-    <meta>
     <title>To do list</title>
   </head>
   <body>
