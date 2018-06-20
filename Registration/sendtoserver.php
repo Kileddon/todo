@@ -1,4 +1,5 @@
-<?php include "../connect.php";
+<?php
+include "../connect.php";
 
 if (isset($_POST['reg_user'])) {
   $login = $_POST['login'];
@@ -22,11 +23,16 @@ if (isset($_POST['reg_user'])) {
    $result = $sql->execute();
    if ($result) {
      $res = $sql->get_result();
-     if (!$res) {
+     $row = $res->fetch_assoc();
+     if (!$row) {
        return;
      }
      echo 'ok ' . $login;
-
+     $token = hash('sha512', $row['id'] . time() . SALT);
+     setcookie('meow', $token);
+     $upd_token = $link->prepare('UPDATE `users` SET `token` =? WHERE `id` =?');
+     $upd_token->bind_param('si', $token, $row['id']);
+     $upd_token->execute();
    }
  }
 
