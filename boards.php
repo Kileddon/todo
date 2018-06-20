@@ -7,11 +7,12 @@
   <h1>Your boards:</h1>
 
   <?php
+    include_once 'Adapters/BoardAdapter.php';
+    $boardAdapter = new BoardAdapter($link);
+
     if (isset($_POST['new_brd'])) {
       $name = $_POST['brd_name'];
-      $sql = $link->prepare('INSERT INTO `boards`(`id`, `name`, `owner`) VALUES (NULL,?,?) ');
-      $sql->bind_param('si', $name, $real_owner);
-      $result = $sql->execute();
+      $boardAdapter->createNewBoard($real_owner, $name);
       $page = $_SERVER['PHP_SELF'];
       echo '<meta http-equiv="Refresh" content="0;' . $page . '">';
     }

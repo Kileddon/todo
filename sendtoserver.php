@@ -1,11 +1,12 @@
 <?php
 if (isset($_POST['reg_user'])) {
+  $userAdapter = new UserAdapter($link);
   $login = $_POST['login'];
   $password = hash('sha512', $_POST['password'] . SALT);
   $email = $_POST['email'];
-  $sql = $link->prepare('INSERT INTO `users`(`id`, `login`, `email`, `password`) VALUES (NULL,?,?,?)');
-  $sql->bind_param('sss', $login, $email, $password);
-  $result = $sql->execute();
+
+  $result = $userAdapter->createNewUser($login, $password, $email);
+
   if ($result) {
     echo 'Hello, ' . $login;
   }
@@ -14,23 +15,24 @@ if (isset($_POST['reg_user'])) {
   }
 }
  elseif (isset($_POST['log_user'])) {
+   $userAdapter = new UserAdapter($link);
    $login = $_POST['login'];
    $password = hash('sha512', $_POST['password'] . SALT);
-   $sql = $link->prepare('SELECT * FROM `users` WHERE login=? AND password=?');
-   $sql->bind_param('ss', $login, $password);
-   $result = $sql->execute();
+
+   $result = $userAdapter->userLogin($login, $password);
+
    if ($result) {
-     $res = $sql->get_result();
+     $res = $result->get_result();
      $row = $res->fetch_assoc();
      if (!$row) {
        return;
      }
      echo 'Hello, ' . $login;
+
      $token = hash('sha512', $row['id'] . time() . SALT);
      setcookie('token', $token);
-     $upd_token = $link->prepare('UPDATE `users` SET `token` =? WHERE `id` =?');
-     $upd_token->bind_param('si', $token, $row['id']);
-     $upd_token->execute();
+     $userAdapter->updateToken($row['id'], $token);
+
      $page = $_SERVER['PHP_SELF'];
      echo '<meta http-equiv="Refresh" content="0;' . $page . '">';
    }
