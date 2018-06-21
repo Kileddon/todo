@@ -8,7 +8,9 @@
 
   <?php
     include_once 'Adapters/BoardAdapter.php';
+    include_once 'Adapters/ListAdapter.php';
     $boardAdapter = new BoardAdapter($link);
+    $listAdapter = new ListAdapter($link);
 
     if (isset($_POST['new_brd'])) {
       $name = $_POST['brd_name'];
@@ -18,18 +20,13 @@
     }
     elseif (isset($_GET['board_id'])) {
       $boardId = intval($_GET['board_id']);
-      $sql = $link->prepare('SELECT `value` FROM `lists` WHERE board=?');
-      $sql->bind_param('i', $boardId);
-      $sql->execute();
-      $res = $sql->get_result();
-      while ($row = $res->fetch_assoc()) {
+      $result = $listAdapter->getBoardId($boardId);
+      while ($row = $result->fetch_assoc()) {
         echo"<br>" . $row['value'];
       }
       if (isset($_POST['new_list'])) {
         $list = $_POST['note'];
-        $sql = $link->prepare('INSERT INTO `lists`(`id`, `value`, `board`) VALUES (NULL,?,?) ');
-        $sql->bind_param('ss', $list, $boardId);
-        $result = $sql->execute();
+        $listAdapter->newList($list, $boardId);
         $page = $_SERVER['PHP_SELF'] . '?board_id=' . $boardId;
         echo '<meta http-equiv="Refresh" content="0;' . $page . '">';
      }
@@ -38,13 +35,11 @@
       }
     }
     echo'<br>';
-    $show_boards = $link->prepare('SELECT * FROM `boards` WHERE owner=?');
-    $show_boards->bind_param('i', $real_owner);
-    $show_boards->execute();
-    $brd_list = $show_boards->get_result();
-    while ($show_board = $brd_list->fetch_assoc()){
-      $brd_id = $show_board['id'];
-      echo '<a href="?board_id=' . $brd_id . '">' . $show_board['name'] . '</a> <br>';
+    $sql = $boardAdapter->showBoards($real_owner);
+    $result = $sql->get_result();
+    while ($sql = $result->fetch_assoc()){
+      $brdId = $sql['id'];
+      echo '<a href="?board_id=' . $brdId . '">' . $sql['name'] . '</a> <br>';
       echo"<br>";
     }
   ?>

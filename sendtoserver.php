@@ -11,7 +11,7 @@ if (isset($_POST['reg_user'])) {
     echo 'Hello, ' . $login;
   }
   else {
-    echo 'rip';
+    echo 'nope';
   }
 }
  elseif (isset($_POST['log_user'])) {

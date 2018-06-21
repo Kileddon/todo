@@ -14,5 +14,13 @@
 
       return $result;
     }
+
+    public function showBoards($real_owner) {
+      $sql = $this->_link->prepare('SELECT * FROM `' . self::TABLE . '` WHERE owner=?');
+      $sql->bind_param('i', $real_owner);
+      $sql->execute();
+
+      return $sql;
+    }
 }
   ?>
